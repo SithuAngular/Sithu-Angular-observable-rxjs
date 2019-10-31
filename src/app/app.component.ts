@@ -1,8 +1,8 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { timer, of, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, tap, map } from 'rxjs/operators';
-
+import { FormGroup, FormControl } from '@angular/forms';
 // const source = timer(1000, 2000);
 // const subscribe = source.subscribe(val => console.log(val));
 // setTimeout(() => { subscribe.unsubscribe(); }, 10000);
@@ -24,8 +24,10 @@ const apiUrl = 'https://api.myjson.com/bins/119cd8';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Sithu-Angular-observable-rxjs';
+  inputChangeLog: string[] = [];
+  inputForm: FormGroup;
   // data: any[] = [];
   // constructor(private http: HttpClient) {
     constructor() {
@@ -41,6 +43,22 @@ export class AppComponent {
     // }, err => {
     //   console.log(err);
     // });
+  }
+  logInputChange() {
+    const nameControl = this.inputForm.get('name');
+    nameControl.valueChanges.forEach(
+      (value: string) => {
+        this.inputChangeLog.push(value);
+        console.log(this.inputChangeLog);
+      }
+    );
+  }
+
+  ngOnInit() {
+    this.inputForm = new FormGroup({
+      name: new FormControl()
+    });
+    this.logInputChange();
   }
   // private handleError<T>(operation = 'operation', result?: T) {
   //   return (error: any): Observable<T> => {

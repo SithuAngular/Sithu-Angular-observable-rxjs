@@ -10,17 +10,25 @@ import { Observable } from 'rxjs';
   styleUrls: ['./acomp.component.css']
 })
 export class AcompComponent implements OnInit {
+
   data: any;
   navStart: Observable<NavigationStart>;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private sharedData: SharedService) {
     this.navStart = router.events.pipe(
       filter(evt => evt instanceof NavigationStart)
     ) as Observable<NavigationStart>;
   }
 
   ngOnInit() {
-    this.navStart.subscribe(evt => console.log('Navigation Started'));
+    this.sharedData.currentData.subscribe(data => this.data = data);
+    this.navStart.subscribe(evt => console.log('Navigation Started!'));
   }
+
+  changeData() {
+    this.sharedData.changeData({name: 'Eric Cantona'});
+    this.router.navigate(['/bcomp']);
+  }
+
 
 }

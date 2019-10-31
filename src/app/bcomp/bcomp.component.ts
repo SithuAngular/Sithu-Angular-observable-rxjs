@@ -8,11 +8,19 @@ import { SharedService } from '../shared.service';
   styleUrls: ['./bcomp.component.css']
 })
 export class BcompComponent implements OnInit {
+  data: any;
 
-  constructor(private activatedRoute: ActivatedRoute) { }
+  constructor(private router: Router, private sharedData: SharedService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.activatedRoute.url.subscribe(url => console.log('The URL changed to: ' + url));
+    this.sharedData.currentData.subscribe(data => this.data = data);
+    this.activatedRoute.url
+      .subscribe(url => console.log('The URL changed to: ' + url));
+  }
+
+  changeData() {
+    this.sharedData.changeData({name: 'Romario Varia'});
+    this.router.navigate(['/acomp']);
   }
 
 }
