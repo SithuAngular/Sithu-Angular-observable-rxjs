@@ -3,10 +3,14 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
+import { AcompComponent } from './acomp/acomp.component';
+import { BcompComponent } from './bcomp/bcomp.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AcompComponent,
+    BcompComponent
   ],
   imports: [
     BrowserModule,
