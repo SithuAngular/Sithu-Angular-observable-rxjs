@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationStart } from '@angular/router';
 import { SharedService } from '../shared.service';
+import { filter } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-acomp',
@@ -8,17 +10,17 @@ import { SharedService } from '../shared.service';
   styleUrls: ['./acomp.component.css']
 })
 export class AcompComponent implements OnInit {
-
-  constructor(private router: Router, private sharedData: SharedService) { }
   data: any;
+  navStart: Observable<NavigationStart>;
 
-  ngOnInit() {
-    this.sharedData.currentData.subscribe(data => this.data = data);
+  constructor(private router: Router) {
+    this.navStart = router.events.pipe(
+      filter(evt => evt instanceof NavigationStart)
+    ) as Observable<NavigationStart>;
   }
 
-  changeData() {
-    this.sharedData.changeData({name: 'Eric Cantona'});
-    this.router.navigate(['/bcomp']);
+  ngOnInit() {
+    this.navStart.subscribe(evt => console.log('Navigation Started'));
   }
 
 }
